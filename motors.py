@@ -14,33 +14,58 @@ import Adafruit_PCA9685
 #logging.basicConfig(level=logging.DEBUG)
 
 # Initialise the PCA9685 using the default address (0x40).
-pwm = Adafruit_PCA9685.PCA9685(0x40)
+pwm = Adafruit_PCA9685.PCA9685(0x41)
 
 # Alternatively specify a different address and/or bus:
 #pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
 
-# Configure min and max servo pulse lengths
-servo_min = 150  # Min pulse length out of 4096
-servo_max = 600  # Max pulse length out of 4096
+def motorOn(motor1, motor2, motor3, motor4):
+        pwm.set_pwm(motor1, 4096, 0)
+	pwm.set_pwm(motor2, 4096, 0)
+	pwm.set_pwm(motor3, 4096,0)
+	pwm.set_pwm(motor4, 4096,0)
+        return
 
-# Helper function to make setting a servo pulse width simpler.
-def set_servo_pulse(channel, pulse):
-    pulse_length = 1000000    # 1,000,000 us per second
-    pulse_length //= 60       # 60 Hz
-    print('{0}us per period'.format(pulse_length))
-    pulse_length //= 4096     # 12 bits of resolution
-    print('{0}us per bit'.format(pulse_length))
-    pulse *= 1000
-    pulse //= pulse_length
-    pwm.set_pwm(channel, 0, pulse)
+def motorOff(motor1, motor2, motor3, motor4):
+        pwm.set_pwm(motor1, 0, 0)
+        pwm.set_pwm(motor2, 0, 0)
+        pwm.set_pwm(motor3, 0, 0)
+        pwm.set_pwm(motor4, 0, 0)
+        return
 
+def forwardSpeed(speed, motor1, motor2, motor3, motor4):
+        pwm.set_pwm(motor1, speed, 0)
+        pwm.set_pwm(motor2, speed, 0)
+        pwm.set_pwm(motor3, speed, 0)
+        pwm.set_pwm(motor4, speed, 0)
+        return
+    
+def backwardSpeed(speed, motor1, motor2, motor3, motor4):
+        pwm.set_pwm(motor1, 0, speed)
+        pwm.set_pwm(motor2, 0, speed)
+        pwm.set_pwm(motor3, 0, speed)
+        pwm.set_pwm(motor4, 0, speed)
+        return 
+    
 # Set frequency to 60hz, good for servos.
 pwm.set_pwm_freq(60)
 
 print('Moving servo on channel 0, press Ctrl-C to quit...')
 while True:
-    # Move servo on channel O between extremes.
-    pwm.set_pwm(0, 0, servo_min)
-    time.sleep(1)
-    pwm.set_pwm(0, 0, servo_max)
-    time.sleep(1)
+        forwardSpeed(2000,0,5,6,11)
+        motorOff(2,4,7,9)
+        motorOn(1,3,8,10)
+	
+	time.sleep(1)
+	
+	motorOff(1,3,8,10)
+	backwardSpeed(2000,0,5,6,11)
+        motorOn(2,4,7,9)
+        
+	time.sleep(1)
+	
+	motorOff(1,3,8,10)
+	motorOff(2,4,7,9)
+        
+        time.sleep(1)
+	
