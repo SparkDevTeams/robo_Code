@@ -28,13 +28,13 @@ def distance():
 
 	return distance
 
-if __name__ == '__main__':
-	try:
-		while True:
-			dist = distance()
-			print("Measured distance = %.1f cm" % dist)
-			time.sleep(1)
-
-	except KeyboardInterrupt:
-		print("Measurement stopped")
-		GPIO.cleanup()
+#if __name__ == '__main__':
+#	try:
+#		while True:
+#			dist = distance()
+#			print("Measured distance = %.1f cm" % dist)
+#			time.sleep(1)
+#
+#	except KeyboardInterrupt:
+#		print("Measurement stopped")
+#		GPIO.cleanup()
